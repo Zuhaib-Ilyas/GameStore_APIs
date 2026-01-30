@@ -1,4 +1,6 @@
+using GameStore_API.Data;
 using GameStore_API.Services;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -10,6 +12,10 @@ builder.Services.AddScoped<IGameCharactersService, GameCharactersService>();
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddDbContext<AppDbContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("UserDataBase")));
+
+builder.Services.AddScoped<IAuthServices, AuthService>();
 
 // 2. Configure Serilog
 Log.Logger = new LoggerConfiguration()
